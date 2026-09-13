@@ -6,7 +6,7 @@
   <title>CX Dashboard</title>
   <link rel="stylesheet" href="./theme.css" />
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script>window.CX_API_BASE = window.CX_API_BASE || localStorage.getItem("CX_API_BASE") || "";</script>
+  <script>window.CX_API_BASE = "https://cx-miniapp-production.up.railway.app";</script>
   <script src="./cx-auth.js"></script>
 </head>
 <body>
@@ -18,7 +18,6 @@
       </div>
       <div class="cx-badge" id="kycBadge">Unverified</div>
     </header>
-
     <section class="cx-hero">
       <div class="cx-hero-label">Total Balance</div>
       <div class="cx-hero-value"><span id="userBalance" data-cx-balance>0.00</span><small>TON</small></div>
@@ -27,21 +26,18 @@
         <span class="cx-chip" id="userNameChip">Account</span>
       </div>
     </section>
-
     <section class="cx-grid-4">
       <button class="cx-action" onclick="location.href='wallet.html'"><div class="cx-action-ico">W</div><div class="cx-action-label">Wallet</div></button>
       <button class="cx-action" onclick="location.href='binary.html'"><div class="cx-action-ico">B</div><div class="cx-action-label">Binary</div></button>
       <button class="cx-action" onclick="location.href='swap.html'"><div class="cx-action-ico">S</div><div class="cx-action-label">Swap</div></button>
       <button class="cx-action" onclick="location.href='app.html'"><div class="cx-action-ico">A</div><div class="cx-action-label">Apps</div></button>
     </section>
-
     <div class="cx-section-title"><span>Markets</span><span class="cx-live">LIVE</span></div>
     <section class="cx-list">
       <div class="cx-row"><div class="cx-row-left"><div class="cx-avatar">BTC</div><div><div class="cx-sym">BTC / USDT</div><div class="cx-name">Bitcoin</div></div></div><div class="cx-price-box"><div class="cx-price" id="pBTC">—</div><div class="cx-change up" id="cBTC">—</div></div></div>
       <div class="cx-row"><div class="cx-row-left"><div class="cx-avatar">ETH</div><div><div class="cx-sym">ETH / USDT</div><div class="cx-name">Ethereum</div></div></div><div class="cx-price-box"><div class="cx-price" id="pETH">—</div><div class="cx-change up" id="cETH">—</div></div></div>
       <div class="cx-row"><div class="cx-row-left"><div class="cx-avatar">TON</div><div><div class="cx-sym">TON / USDT</div><div class="cx-name">Toncoin</div></div></div><div class="cx-price-box"><div class="cx-price" id="pTON">—</div><div class="cx-change up" id="cTON">—</div></div></div>
     </section>
-
     <nav class="cx-footer-nav">
       <button class="cx-nav-item active" onclick="location.href='dashboard.html'">Home</button>
       <button class="cx-nav-item" onclick="location.href='wallet.html'">Wallet</button>
