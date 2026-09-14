@@ -28,75 +28,36 @@
   <div class="cx-app">
     <header class="cx-header">
       <div class="cx-brand"><div class="cx-brand-mark">CX</div><div>Apps</div></div>
-      <div class="cx-badge">TON <span id="userBalance" data-cx-balance>...</span></div>
+      <div class="cx-badge">TON <span id="userBalance" data-cx-balance>0.00</span></div>
     </header>
-    <div id="dbg" style="margin:10px;padding:10px;background:#1a1a1a;color:#d4af37;border-radius:10px;font-size:12px;word-break:break-all">loading...</div>
     <section class="cx-hero">
       <div class="cx-hero-label">CX SuperApp</div>
       <div class="cx-hero-value" style="font-size:22px">Trading Suite</div>
       <div class="cx-hero-sub"><span class="cx-chip">Black & Gold Terminal</span></div>
     </section>
     <div class="menu-grid">
-      <div class="menu-card" onclick="location.href='dashboard.html'"><div class="menu-ico">H</div><div class="menu-title">Dashboard</div><div class="menu-desc">Balance & markets</div></div>
-      <div class="menu-card" onclick="location.href='wallet.html'"><div class="menu-ico">W</div><div class="menu-title">Wallet</div><div class="menu-desc">Assets & deposit memo</div></div>
-      <div class="menu-card" onclick="location.href='binary.html'"><div class="menu-ico">B</div><div class="menu-title">Binary</div><div class="menu-desc">Live chart options</div></div>
-      <div class="menu-card" onclick="location.href='swap.html'"><div class="menu-ico">S</div><div class="menu-title">Swap</div><div class="menu-desc">TON to USDT</div></div>
-      <div class="menu-card" onclick="location.href='game.html'"><div class="menu-ico">G</div><div class="menu-title">Sniper</div><div class="menu-desc">Tick chart training</div></div>
+      <div class="menu-card" onclick="location.href='dashboard.html'+location.search"><div class="menu-ico">H</div><div class="menu-title">Dashboard</div><div class="menu-desc">Balance & markets</div></div>
+      <div class="menu-card" onclick="location.href='wallet.html'+location.search"><div class="menu-ico">W</div><div class="menu-title">Wallet</div><div class="menu-desc">Assets & deposit memo</div></div>
+      <div class="menu-card" onclick="location.href='binary.html'+location.search"><div class="menu-ico">B</div><div class="menu-title">Binary</div><div class="menu-desc">Live chart options</div></div>
+      <div class="menu-card" onclick="location.href='swap.html'+location.search"><div class="menu-ico">S</div><div class="menu-title">Swap</div><div class="menu-desc">TON to USDT</div></div>
+      <div class="menu-card" onclick="location.href='game.html'+location.search"><div class="menu-ico">G</div><div class="menu-title">Sniper</div><div class="menu-desc">Tick chart training</div></div>
       <div class="menu-card" onclick="Telegram.WebApp.close()"><div class="menu-ico">P</div><div class="menu-title">Prop</div><div class="menu-desc">Open bot for challenges</div></div>
     </div>
     <nav class="cx-footer-nav">
-      <button class="cx-nav-item" onclick="location.href='dashboard.html'">Home</button>
-      <button class="cx-nav-item" onclick="location.href='wallet.html'">Wallet</button>
-      <button class="cx-nav-item" onclick="location.href='binary.html'">Trade</button>
-      <button class="cx-nav-item active" onclick="location.href='app.html'">More</button>
+      <button class="cx-nav-item" onclick="location.href='dashboard.html'+location.search">Home</button>
+      <button class="cx-nav-item" onclick="location.href='wallet.html'+location.search">Wallet</button>
+      <button class="cx-nav-item" onclick="location.href='binary.html'+location.search">Trade</button>
+      <button class="cx-nav-item active" onclick="location.href='app.html'+location.search">More</button>
     </nav>
   </div>
   <script>
     const tg = window.Telegram && window.Telegram.WebApp;
-    const dbg = document.getElementById("dbg");
-    const el = document.getElementById("userBalance");
-    function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
-    async function waitInitData(maxMs){
-      const t0 = Date.now();
-      while (Date.now() - t0 < maxMs) {
-        if (tg) {
-          try { tg.ready(); tg.expand(); } catch(e){}
-          if (tg.initData && tg.initData.length > 10) return tg.initData;
-        }
-        await sleep(200);
-      }
-      return (tg && tg.initData) || "";
-    }
-    (async function(){
-      if (!tg) {
-        dbg.textContent = "ERR: Telegram.WebApp missing (not inside Telegram)";
-        el.textContent = "ERR";
-        return;
-      }
+    if (tg) {
       try { tg.ready(); tg.expand(); tg.setHeaderColor("#070707"); tg.setBackgroundColor("#070707"); } catch(e){}
-      const initData = await waitInitData(3000);
-      dbg.textContent = "API=" + (window.CX_API_BASE||"(empty)") + " | initData=" + (initData ? ("yes:"+initData.length) : "NO");
-      if (!initData) {
-        el.textContent = "ERR";
-        el.style.color = "#ff4d4d";
-        dbg.textContent = "ERR: initData empty. Use mobile Telegram + WebApp button (not browser).";
-        dbg.style.color = "#ffb4b4";
-        return;
-      }
-      try {
-        const data = await CXAuth.fetchAccount();
-        const n = Number((data.account||{}).balance_ton)||0;
-        el.textContent = n.toFixed(2);
-        el.style.color = "#d4af37";
-        dbg.textContent = "OK balance=" + n + " user=" + ((data.user&&data.user.id)||"?");
-        dbg.style.color = "#7dffa0";
-      } catch (err) {
-        el.textContent = "ERR";
-        el.style.color = "#ff4d4d";
-        dbg.textContent = "ERR: " + String(err.message||err);
-        dbg.style.color = "#ffb4b4";
-      }
-    })();
+    }
+    CXAuth.ready(async function () {
+      await CXAuth.bindBalance(document.getElementById("userBalance"), "ton");
+    });
   </script>
 </body>
 </html>
